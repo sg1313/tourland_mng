@@ -1,0 +1,136 @@
+<%- include("../../include/header.ejs") %>
+<style>
+    label {
+        float: left;
+        width: 150px;
+        margin-left:20px;
+    }
+    span.errorMsg{
+        color: tomato;
+        display: none;
+    }
+
+</style>
+<link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css">
+<script>
+
+    const datepicker = require('js-datepicker')
+    $( function() {
+        $( "#datepicker" ).datepicker();
+    } );
+</script>
+<div class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">사원 정보 조회</h3>
+                </div>
+                <form role="form" action="empRegister" method="post" id="detaiLForm">
+                    <div class="box-body">
+                        <input type="hidden" value="" id="forSubmit">
+                        <div class="form-group">
+                            <label>사원 번호</label>
+                            <input type="text" name="empno" value="<%=empVO.empno%>" readonly="readonly" style="background:lavender;" >
+                        </div>
+                        <div class="form-group">
+                            <label>사원 이름</label>
+                            <input type="text" name="empname" required="required" placeholder=" 한글 2-5자리" value="<%=empVO.empname%>">
+                            <span class="errorMsg">이름을 한글 2자리에서 5자리로 입력해주세요.</span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>생년월일</label>
+                            <input type="date" name="empbirth" id="datepicker" placeholder="2000-02-02" value="<%=empVO.empbirth%>">
+                            <span class="errorMsg">생년월일 형식에 맞게 넣어주세요. 예시: 2000-02-02</span>
+                        </div>
+                        <div class="form-group">
+                            <label>전화번호</label>
+                            <input type="text" name="emptel" required="required"  placeholder=" 010-4334-4321" value="<%=empVO.emptel%>">
+                            <span class="errorMsg">형식에 맞게 넣어주세요 예시: 010-4334-4321</span>
+                        </div>
+                        <div class="form-group">
+                            <label>주소</label>
+                            <input type="text" name="empaddr" required="required" value="<%=empVO.empaddr%>">
+                        </div>
+                        <div class="form-group">
+                            <label>권한</label>
+                            <input type="text" name="empauth" required="required" value="<%=empVO.empauth%>">
+                        </div>
+                        <div class="form-group">
+                            <label>아이디</label>
+                            <input type="text" name="empid" value="<%=empVO.empid%>" readonly="readonly" style="background:lavender;" >
+                        </div>
+                        <div class="box-footer">
+                            <!--							 <button type="submit" class="btn btn-primary">등록</button>-->
+                            <button type="button" class="btn btn-primary" style="margin-top:10px;" id="btnReturnToList">리스트로 돌아가기</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    let empno ="<%=empVO.empno%>";
+    let searchType = "<%=cri.searchType%>";
+    let keyword = "<%=cri.keyword%>";
+
+    let empretired = <%=empretired%>;
+
+    $(function(){
+
+        //일반 사원 정보인지 퇴사 사원 정보인지에 따라 폼 스타일 다르게 하기
+        if(empretired==1){
+            $("#detaiLForm input").css("background","lavender");
+            $("input").attr("readonly","readonly");
+        }
+        //정규 표현식 ,빈칸인 경우는 부트 스트랩의 기본 설정으로 이미 설정되어있음
+        $("form").submit(function(e){
+            $(this).attr("onsubmit","");
+            $(".errorMsg").css("display", "none");
+            const empname = $("input[name='empname']").val();
+            const empbirth = $("input[name='empbirth']").val();
+            const emptel = $("input[name='emptel']").val();
+            const empaddr = $("input[name='empaddr']").val();
+            const empauth = $("input[name='empauth']").val();
+            const empid = $("input[name='empid']").val();
+
+            //이름 정규표현식
+            const nameReg = /^[가-힣]{2,5}$/; //네임은 2-5 한글
+            if (nameReg.test(empname) == false) {
+                $("input[name='empname']").next().css("display", "inline");
+                return false;
+            }
+            //생년월일정규표현식
+            const birthReg = /^(1|2)[0-9]{3}-(01|02|03|04|05|06|07|08|09|10|11|12)-(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)$/;
+            if (birthReg.test(empbirth) == false) {
+                $("input[name='empbirth']").next().css("display", "inline");
+                return false;
+            }
+            //전화번호 정규 표현식
+            const phoneReg = /^(010|011|019|018|017)-[0-9]{3,4}-[0-9]{4}$/;
+            if (phoneReg.test(emptel) == false) {
+                $("input[name='emptel']").next().css("display", "inline");
+                return false;
+            }
+
+        })
+
+        $("#btnCheck").click(function() {
+            const empid = $("input[name='empid']").val();
+        })
+
+        //리스트로 버튼 눌렀을 때 리스트로 돌아가기
+        $("#btnReturnToList").click(function(){
+            location.href="/manager/employee/empMngList/<%=empretired%>/?searchType="+searchType+"&keyword="+keyword;
+        })
+    })
+
+</script>
+
+<%- include('../../include/footer.ejs')%>
