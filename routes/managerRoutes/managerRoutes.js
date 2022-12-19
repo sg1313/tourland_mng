@@ -85,7 +85,7 @@ router.get('/employeeMngList/:empretired', async (req,res,next)=>{
     res.render("manager/employee/employeeMngList",{cri, list, btnName, pagingData, Manager, empretired, Auth});
 })
 
-router.get('/employee/empDetailForm/:empretired', async (req,res,next)=> {
+router.get('/employeeDetailForm/:empretired', async (req,res,next)=> {
     //empretired 일반사원, 퇴사사원 구분
 
     console.log("33333333333333333333");
@@ -102,9 +102,40 @@ router.get('/employee/empDetailForm/:empretired', async (req,res,next)=> {
     let cri = {};
     let Manager = {};
     let Auth = {};
+    let success ="";
 
-    res.render("manager/employee/employeeDetailForm", {empVO, cri, Manager, Auth, empretired});
+    res.render("manager/employee/employeeDetailForm", {empVO, cri, Manager, Auth, empretired,success});
 });
+
+router.post('/employeeDetailForm/:empretired', async (req,res,next)=> {
+    //empretired 일반사원, 퇴사사원 구분
+
+    console.log("33333333333333333333");
+    const {empretired, empno, empname, empbirth, emptel, empaddr, empauth, empid} = req.params;
+    let { no, currentPage, searchType, keyword } = req.query;
+
+    let empVO = await models.employee.findOne({
+        raw : true,
+
+        where : {empno : no}
+    })
+    console.log("empid->", empVO);
+
+    let cri = {};
+    let Manager = {};
+    let Auth = {};
+    let success ="";
+
+    res.render("manager/employee/employeeDetailForm", {empVO, cri, Manager, Auth, empretired,success});
+});
+
+router.get('/manager/employeeMngList/:empretired', (req,res,next)=>{
+
+    let Manager = {};
+    let Auth = {};
+
+    res.render("manager/employee/employeeRegister",{Manager, Auth, empretired});
+})
 
 router.get('/userMngList/:usersecess', async (req,res,next)=>{
     //usersecess 정상회원, 탈퇴회원 구분
@@ -193,7 +224,7 @@ router.get('/userDetailForm/:usersecess', async (req,res,next)=> {
     res.render("manager/user/userDetailForm", {userVO, cri, Manager, Auth, usersecess,couponLists});
 });
 
-/ ✈️  product/filightMngList----------------------------------------------------
+// / ✈️  productfilightMngList----------------------------------------------------
 
 router.get('/flightMngList', async (req,res,next)=>{
 
