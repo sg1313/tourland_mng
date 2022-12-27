@@ -286,6 +286,246 @@ router.get('/flightMngList', async (req,res,next)=>{
 // 🚗 렌트카 관리-----------------
 
 
+
+// 공지사항 관리 ------------------------------------------
+router.get('/noticeMngList', async (req, res, next) => {
+
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    const usersecess = req.params.usersecess;
+    let { searchType, keyword } = req.query;
+
+    const contentSize = 5 // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이
+    const { limit, offset } = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+    let cri = {currentPage};
+
+    let noticeFixedList =
+        await models.notice.findAll({
+            raw : true,
+            where : {
+                fixed : 1
+            },
+            limit, offset
+        });
+    console.log('====',noticeFixedList);
+
+
+    let noticeNoFixedList =
+        await models.notice.findAll({
+            raw : true,
+            where : {
+                fixed: 0
+            },
+            order : [
+                ["regdate", "DESC"]
+            ],
+            limit, offset
+        });
+
+    let noticeNoFixedCountList =
+        await models.notice.findAndCountAll({
+            raw : true,
+            where : {
+                fixed: 0
+            },
+            order : [
+                ["regdate", "DESC"]
+            ],
+            limit, offset
+        });
+
+    const pagingData = getPagingData(noticeNoFixedCountList, currentPage, limit);
+    console.log('---------', noticeNoFixedList);
+
+    res.render("manager/notice/noticeMngList", {Manager, Auth, cri, noticeFixedList, noticeNoFixedList, pagingData});
+})
+
+//공지사항 추가하는 화면
+router.get('/addNoticeForm', (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let totalCnt = {};
+
+    res.render('manager/notice/addNoticeForm', {Manager, Auth, totalCnt});
+})
+
+//공지사항 추가하기
+router.post('/addNoticeForm', async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let totalCnt = {};
+
+// ------------------공지 등록하면 공지사항도 같이 보여줘야함-----------------------------------
+    const usersecess = req.params.usersecess;
+    let { searchType, keyword } = req.query;
+
+    const contentSize = 5 // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이
+    const { limit, offset } = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+
+    let cri = {currentPage};
+
+    let body = {};
+    let isChecked = req.body.fixed;
+    if (isChecked != true) {
+        body = {
+            raw: true,
+            fixed : 0,
+            title : req.body.title,
+            writer : req.body.writer, //투어랜드 hidden 되어있음
+            content : req.body.content,
+        }
+    } else {
+        body= {
+            raw: true,
+            fixed : 1,
+            title : req.body.title,
+            writer : req.body.writer, //투어랜드 hidden 되어있음
+            content : req.body.content,
+        }
+    }
+    const noticeRegister = await models.notice.create(body);
+
+    let noticeFixedList =
+        await models.notice.findAll({
+            raw : true,
+            where : {
+                fixed : 1
+            },
+            limit, offset
+        });
+    console.log('====',noticeFixedList);
+    let noticeNoFixedList =
+        await models.notice.findAll({
+            raw : true,
+            where : {
+                fixed: 0
+            },
+            order : [
+                ["regdate", "DESC"]
+            ],
+            limit, offset
+        });
+    let noticeNoFixedCountList =
+        await models.notice.findAndCountAll({
+            raw : true,
+            where : {
+                fixed: 0
+            },
+            order : [
+                ["regdate", "DESC"]
+            ],
+            limit, offset
+        });
+
+    const pagingData = getPagingData(noticeNoFixedCountList, currentPage, limit);
+    console.log('---------', noticeNoFixedList);
+
+
+    res.render('manager/notice/noticeMngList', {Manager, Auth, totalCnt, noticeRegister, pagingData, noticeNoFixedCountList, noticeNoFixedList, noticeFixedList, cri});
+})
+
+
+// 공지사항 읽기
+router.get('/noticeDetail', async (req, res, next) => {
+
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let cri = {};
+    const notice = await models.notice.findOne({
+        raw: true,
+        where: {
+            no : req.query.no
+        }
+    });
+
+    res.render("manager/notice/noticeDetail", {Manager, Auth, notice, cri});
+})
+
+
+// 공지사항 수정하기
+router.get('/editNotice', async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let cri = {};
+    const notice = await models.notice.findOne({
+        where: {
+            no : req.query.no
+        }
+    });
+    console.log('-------수정화면입장----------', notice);
+
+    res.render("manager/notice/editNotice", {Manager, Auth, cri, notice});
+})
+
+// 공지사항 수정하기 전송
+router.post('/editNotice', async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let cri = {};
+    const update = await models.notice.update({
+        title : req.body.title,
+        content : req.body.content,
+        fixed : req.body.fixed
+    }, {
+        where : {
+            no : req.body.no
+        }
+    });
+
+    // 수정하고 수정된 페이지 보여줘야 하니까
+    const notice = await models.notice.findOne({
+        where: {
+            no : req.body.no
+        }
+    });
+
+    console.log('---------req.body------', req.body);
+    console.log('-------수정하기----------', update);
+
+    res.render("manager/notice/noticeDetail", {Manager, Auth, cri, update, notice});
+});
+
+
+// 공지사항 삭제하기
+router.delete('/removeNotice', async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let cri = {};
+    models.notice.destroy({
+        where: {
+            no : req.query.no,
+        }
+    }).then( (result) => {
+        console.log('----------삭제되었습니다------->', result);
+    }).catch( (err) => {
+        console.log('삭제 실패!!', err);
+        next(err);
+    })
+
+    res.render('manager/notice/noticeMngList', {Manager, Auth, cri})
+})
+
+// 로그인폼------------------------------------------------
 router.get('/loginForm', async (req,res,next)=> {
     let { registerSuccess, id} = req.query;
 

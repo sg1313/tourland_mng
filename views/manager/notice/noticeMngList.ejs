@@ -1,0 +1,79 @@
+<%- include("../../include/header.ejs") %>
+<style>
+	table th, td { text-align: center;}
+	.red { color : maroon; font-weight: bold; }
+	.blue { color : steelblue; font-weight: bold;}
+</style>
+<script>
+$(function(){
+
+	$("#addNotice").click(function(){
+		location.href ="/manager/addNoticeForm";
+	})
+})
+</script>
+<div class="content">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="box box-primary">
+				<div class="box-header">
+					<h2 class="box-title">공지사항 관리</h2>
+				</div>
+				<div class="box-body">
+				<!-- 검색 작업에서 유지될 데이터
+					1. 현재 페이지의 번호
+					2. 페이지당 보여지는 데이터의 수
+				 -->
+				</div>
+				<div class="box-body">
+					<button id="addNotice">추가</button>
+				</div>
+				<div class="box-body">
+					<table class="table table-bordered">
+						<tr>
+							<th>번호</th>
+							<th>제목</th>
+							<th>작성자</th>
+							<th>작성일자</th>
+							<th>상단 고정 여부</th>
+						</tr>
+						<% noticeFixedList.forEach( n => { %>
+							<tr>
+								<td><%=n.no%></td>
+								<td><a href="/manager/noticeDetail?no=<%=n.no%>&page=<%=cri.page%>"><%=n.title%></a></td>
+								<td><%=n.writer%></td>
+								<td><%=n.regdate%></td>
+								<td class="blue">상단 고정</td>
+							</tr>
+						<% }) %>
+						<% noticeNoFixedList.forEach( n => { %>
+							<tr>
+								<td><%=n.no%></td>
+								<td><a href="/manager/noticeDetail?no=<%=n.no%>&page=<%=cri.page%>"><%=n.title%></a></td>
+								<td><%=n.writer%></td>
+								<td><%=n.regdate%></td>
+								<td class="red">상단 고정 안함</td>
+							</tr>
+						<% }) %>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$("#btnSearch").click(function(){
+		var searchType = $("#searchType").val();
+		var keyword = $("#keywordInput").val();
+		location.href = "noticeMngList?searchType="+searchType+"&keyword="+keyword;
+		//searchBoardController의 listPage GET 으로 받음
+
+	})
+
+	$("#btnRegister").click(function(){
+		location.href = "register";
+	})
+</script>
+
+<%- include("../../include/footer.ejs") %>
