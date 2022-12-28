@@ -1,0 +1,99 @@
+<%- include("../../include/header.ejs")%>
+<style>
+	.table th,td {
+		text-align: center;
+	}
+	.pagination {
+		margin-left : 650px;
+	}
+	.pagination li:hover {
+		cursor: pointer;
+	}
+	.active {
+		background-color : lightblue;
+		color : white;  
+	}
+	.planBoardList:hover {
+		cursor : pointer;
+		background-color : lightgrey;
+	}
+	#btnSearch{
+		width: 72px;
+    	margin-left: 30px;
+	}
+	#searchType{
+		padding:3px;
+	}   
+	#searchType2{
+		padding: 2px;
+    	margin: 0px 8px;
+	}
+	#keywordInput{
+		padding:2px;
+	}
+	
+</style>
+<div class="content">	
+	<div class="row">
+		<div class="col-sm-12">    
+			<div class="box box-primary">      
+				<div class="box-header">
+					<h2 class="box-title">상품 문의사항</h2>
+				</div>
+				<div class="box-body">
+					<table class="table table-bordered">
+						<tr>
+							<th>번호</th>
+							<th>제목</th>
+							<th>작성자</th>
+							<th>작성일자</th>
+							<th>답변상태</th>
+						</tr>
+						<% list.forEach( planBoard => { %>
+						<tr class="planBoardList" data-no="<%=planBoard.id%>" data-respond="<%=planBoard.respond%>">
+							<td><%=planBoard.id%></td>
+							<td><%=planBoard.title%></td>
+							<td><%=planBoard.writer%></td>
+							<td><%=planBoard.regdate%></td>
+							<% if(planBoard.answer==0) { %>
+								<td><span class="badge bg-orange">답변미완료</span></td>
+								<% } %>
+							<% if(planBoard.answer==1) { %>
+								<td><span class="badge bg-blue">답변완료</span></td>
+							<% } %>
+						</tr>
+						<% }) %>
+					</table>
+				</div>
+<!--				<div class="box-footer">-->
+<!--					<ul class="pagination">-->
+<!--					<c:if test="${pageMaker.prev == true}">-->
+<!--						<li><a href="${pageContext.request.contextPath}/manager/planBoardList?page=${pageMaker.startPage-1}&searchType=${cri.searchType}&searchType2=${cri.searchType2}&keyword=${cri.keyword}">&laquo;</a></li>-->
+<!--					</c:if>-->
+<!--					<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">-->
+<!--						<li class="${cri.page==idx?'active':''}"><a href="${pageContext.request.contextPath}/manager/planBoardList?page=${idx}&searchType=${cri.searchType}&searchType2=${cri.searchType2}&keyword=${cri.keyword}">${idx}</a></li>-->
+<!--					</c:forEach>-->
+<!--					<c:if test="${pageMaker.next == true}">-->
+<!--						<li><a href="${pageContext.request.contextPath}/manager/planBoardList?page=${pageMaker.endPage+1}&searchType=${cri.searchType}&searchType2=${cri.searchType2}&keyword=${cri.keyword}">&raquo;</a></li>-->
+<!--					</c:if>-->
+<!--					</ul>-->
+<!--				</div>-->
+			</div>         
+		</div>
+	</div>
+</div>
+<script>
+
+		$(".planBoardList").click(function() {
+		var no = $(this).attr("data-no");
+		var respond=$(this).attr("data-respond");
+		var page =	"<%=cri.page%>";
+		if(respond==null || respond==""){
+			location.href = "planBoardDetail?no="+no;
+		}else{
+			location.href = "planBoardModify?no="+no;
+		}
+	})
+
+</script>
+<%- include("../../include/footer.ejs")%>

@@ -285,11 +285,251 @@ router.get('/flightMngList', async (req,res,next)=>{
 // 🚩 투어 관리 -------------------
 // 🚗 렌트카 관리-----------------
 
+// 📋️ 고객센터(게시판) 관리 ------------------------------------------------
+// 📋️ ️FAQ 게시판 보기
+router.get('/FAQMngList', async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    const usersecess = req.params.usersecess;
+    let { searchType, keyword } = req.query;
+
+    const contentSize = 5 // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이
+    const { limit, offset } = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+
+    const list =
+        await  models.faq.findAll({
+            raw : true,
+            order: [
+                ["no", "DESC"]
+            ],
+            limit, offset
+        });
+    const listCount =
+        await models.faq.findAndCountAll({
+            raw : true,
+            order : [
+                ["no", "DESC"]
+            ],
+            limit, offset
+        });
+
+    const pagingData = getPagingData(listCount, currentPage, limit);
+    let cri = {currentPage};
 
 
-// 공지사항 관리 ------------------------------------------
+    res.render("manager/board/FAQMngList", {Manager, Auth, list , pagingData, cri});
+})
+
+// FAQ 등록하기 입장
+router.get("/FAQRegister", async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    res.render("manager/board/FAQRegister", {Manager, Auth})
+})
+
+// FAQ 등록하기 전송
+router.post("/FAQRegister", async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    const faq = await models.faq.create({
+        raw : true,
+        title : req.body.title,
+        content : req.body.content
+    });
+    console.log('-------FAQ 등록------', faq);
+
+    // FAQ 메인화면 보여주기 위함
+    const usersecess = req.params.usersecess;
+    let { searchType, keyword } = req.query;
+
+    const contentSize = 5 // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이
+    const { limit, offset } = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+
+    const list =
+        await  models.faq.findAll({
+            raw : true,
+            order: [
+                ["no", "DESC"]
+            ],
+            limit, offset
+        });
+    const listCount =
+        await models.faq.findAndCountAll({
+            raw : true,
+            order : [
+                ["no", "DESC"]
+            ],
+            limit, offset
+        });
+
+    const pagingData = getPagingData(listCount, currentPage, limit);
+    let cri = {currentPage};
+
+    res.render("manager/board/FAQMngList", {Manager, Auth, faq, list, listCount, pagingData, cri})
+})
+
+// FAQ 게시글 읽기
+router.get("/FAQDetail", async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    console.log('-------------query??------------', req.query);
+    let faq = await models.faq.findOne({
+        raw: true,
+        where : {
+            no : req.query.no
+            }
+        });
+    console.log('-----------------FAQ읽기----------------', faq);
+
+    let cri = {};
+
+    res.render("manager/board/FAQDetail", {Manager, Auth, faq, cri});
+})
+
+// FAQ 게시글 수정
+router.get("/FAQModify", async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let cri = {};
+    let faq = await models.faq.findOne({
+        raw : true,
+        where: {
+            no : req.query.no
+        }
+    });
+    console.log('-------수정화면입장----------', faq);
+
+    res.render("manager/board/FAQModify", {Manager, Auth, faq, cri})
+})
+
+// FAQ 게시글 수정한거 전송하기
+router.post("/FAQModify", async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let cri = {};
+    const update = await models.faq.update({
+        raw : true,
+        title : req.body.title,
+        content : req.body.content,
+    }, {
+        where : {
+            no : req.body.no
+        }
+    });
+
+    // 수정하고 수정된 페이지 보여줘야 하니까
+    const faq = await models.faq.findOne({
+        where: {
+            no : req.body.no
+        }
+    });
+
+    console.log('---------req.body------', req.body);
+    console.log('-------수정하기----------', update);
+
+    res.render("manager/board/FAQDetail", {Manager, Auth, cri, update, faq});
+})
+
+// FAQ 게시글 삭제
+router.delete('/removeFAQ', async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let cri = {};
+    models.faq.destroy({
+        where: {
+            no : req.query.no,
+        }
+    }).then( (result) => {
+        console.log('----------삭제되었습니다------->', result);
+    }).catch( (err) => {
+        console.log('삭제 실패!!', err);
+        next(err);
+    })
+
+    res.render('manager/notice/FAQMngList', {Manager, Auth, cri})
+})
+
+// 📋 여행후기 관리
+// 여행 후기 관리 게시판 읽기
+router.get("/custBoardMngList", async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    const usersecess = req.params.usersecess;
+    let { searchType, keyword } = req.query;
+
+    const contentSize = 5 // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이
+    const { limit, offset } = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+
+    const list =
+        await  models.custboard.findAll({
+            raw : true,
+            order: [
+                ["id", "DESC"]
+            ],
+            limit, offset
+        });
+    const listCount =
+        await models.custboard.findAndCountAll({
+            raw : true,
+            order : [
+                ["id", "DESC"]
+            ],
+            limit, offset
+        });
+
+    const pagingData = getPagingData(listCount, currentPage, limit);
+    let cri = {currentPage};
+
+    res.render("manager/board/custBoardList", {Manager, Auth, list, pagingData, cri});
+})
+
+
+
+
+// 📋 상품 문의사항 관리
+router.get('/planBoardList', async (req, res, next) => {
+// header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    const list = await models.planboard.findAll({
+        raw : true,
+        order: [
+            ["id", "DESC"]
+        ],
+    })
+
+    res.render("manager/board/planBoardList", {Manager, Auth});
+
+})
+
+// 📢️️ 공지사항 관리 ------------------------------------------
 router.get('/noticeMngList', async (req, res, next) => {
-
     // header 공통 !!!
     let Manager = {};
     let Auth = {};
@@ -444,7 +684,7 @@ router.get('/noticeDetail', async (req, res, next) => {
     let Manager = {};
     let Auth = {};
 
-    let cri = {};
+    let cri = {currentPage};
     const notice = await models.notice.findOne({
         raw: true,
         where: {
@@ -464,6 +704,7 @@ router.get('/editNotice', async (req, res, next) => {
 
     let cri = {};
     const notice = await models.notice.findOne({
+        raw : true,
         where: {
             no : req.query.no
         }
@@ -481,6 +722,7 @@ router.post('/editNotice', async (req, res, next) => {
 
     let cri = {};
     const update = await models.notice.update({
+        raw : true,
         title : req.body.title,
         content : req.body.content,
         fixed : req.body.fixed
