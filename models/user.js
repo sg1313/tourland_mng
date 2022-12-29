@@ -5,7 +5,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
       comment: "유저번호"
     },
     username: {
@@ -39,14 +38,13 @@ module.exports = function(sequelize, DataTypes) {
       comment: "유저아이디"
     },
     userpass: {
-      type: DataTypes.STRING(512),
+      type: DataTypes.STRING(41),
       allowNull: true,
       comment: "유저비밀번호"
     },
     usersecess: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue : '1',
       comment: "탈퇴여부"
     }
   }, {

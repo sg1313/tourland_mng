@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('custboard', {
-    no: {
+    id: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
@@ -18,20 +19,24 @@ module.exports = function(sequelize, DataTypes) {
       comment: "내용"
     },
     writer: {
-      type: DataTypes.STRING(5),
+      type: DataTypes.STRING(100),
       allowNull: true,
       comment: "작성자"
     },
     regdate: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
       comment: "작성일자"
     },
     passwd: {
       type: DataTypes.STRING(50),
       allowNull: true,
       comment: "비밀번호"
+    },
+    image: {
+      type: DataTypes.STRING(200),
+      allowNull: true,
+      comment: "이미지"
     }
   }, {
     sequelize,
@@ -43,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "no" },
+          { name: "id" },
         ]
       },
     ]

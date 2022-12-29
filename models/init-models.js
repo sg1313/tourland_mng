@@ -1,6 +1,7 @@
 var DataTypes = require("sequelize").DataTypes;
 var _airplane = require("./airplane");
 var _banner = require("./banner");
+var _board = require("./board");
 var _cart = require("./cart");
 var _coupon = require("./coupon");
 var _custboard = require("./custboard");
@@ -23,10 +24,12 @@ var _tour = require("./tour");
 var _user = require("./user");
 var _usercoupon = require("./usercoupon");
 var _userpstatus = require("./userpstatus");
+var _usertest = require("./usertest");
 
 function initModels(sequelize) {
   var airplane = _airplane(sequelize, DataTypes);
   var banner = _banner(sequelize, DataTypes);
+  var board = _board(sequelize, DataTypes);
   var cart = _cart(sequelize, DataTypes);
   var coupon = _coupon(sequelize, DataTypes);
   var custboard = _custboard(sequelize, DataTypes);
@@ -49,6 +52,7 @@ function initModels(sequelize) {
   var user = _user(sequelize, DataTypes);
   var usercoupon = _usercoupon(sequelize, DataTypes);
   var userpstatus = _userpstatus(sequelize, DataTypes);
+  var usertest = _usertest(sequelize, DataTypes);
 
   airplane.belongsToMany(product, { as: 'pno_products', through: pairstatus, foreignKey: "ano", otherKey: "pno" });
   coupon.belongsToMany(user, { as: 'userno_users', through: usercoupon, foreignKey: "cno", otherKey: "userno" });
@@ -100,6 +104,7 @@ function initModels(sequelize) {
   return {
     airplane,
     banner,
+    board,
     cart,
     coupon,
     custboard,
@@ -122,6 +127,7 @@ function initModels(sequelize) {
     user,
     usercoupon,
     userpstatus,
+    usertest,
   };
 }
 module.exports = initModels;

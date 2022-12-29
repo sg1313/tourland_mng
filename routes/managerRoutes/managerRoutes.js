@@ -285,6 +285,23 @@ router.get('/flightMngList', async (req,res,next)=>{
 // 🚩 투어 관리 -------------------
 // 🚗 렌트카 관리-----------------
 
+// 🎁️ 이벤트 관리----------------------------------------------------------
+// 전체 이벤트 보기
+router.get("/eventMngList", (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    const list = models.event.findAll({
+            raw : true,
+            order: [
+                ["no", "DESC"]
+            ],
+        });
+
+    res.render("manager/event/eventMngList", {Manager, Auth, list})
+})
+
 // 📋️ 고객센터(게시판) 관리 ------------------------------------------------
 // 📋️ ️FAQ 게시판 보기
 router.get('/FAQMngList', async (req, res, next) => {
@@ -469,10 +486,11 @@ router.delete('/removeFAQ', async (req, res, next) => {
     res.render('manager/notice/FAQMngList', {Manager, Auth, cri})
 })
 
-// 📋 여행후기 관리
-// 여행 후기 관리 게시판 읽기
+// 📋 여행후기 관리 ------------------------------------------------------------------------
+// 여행 후기 관리 게시판
 router.get("/custBoardMngList", async (req, res, next) => {
     // header 공통 !!!
+
     let Manager = {};
     let Auth = {};
 
@@ -484,6 +502,7 @@ router.get("/custBoardMngList", async (req, res, next) => {
     const { limit, offset } = getPagination(currentPage, contentSize);
 
     keyword = keyword ? keyword : "";
+    console.log("cust----------11111--");
 
     const list =
         await  models.custboard.findAll({
@@ -493,6 +512,10 @@ router.get("/custBoardMngList", async (req, res, next) => {
             ],
             limit, offset
         });
+
+    console.log("cust----------22222--");
+
+
     const listCount =
         await models.custboard.findAndCountAll({
             raw : true,
@@ -508,10 +531,51 @@ router.get("/custBoardMngList", async (req, res, next) => {
     res.render("manager/board/custBoardList", {Manager, Auth, list, pagingData, cri});
 })
 
+// 여행 후기 관리 게시글 읽기
+router.get("/custBoardDetail", async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let custBoardVO =
+        await models.custboard.findOne({
+            raw: true,
+            where: {
+                id : req.query.id
+            }
+        });
+    let cri = {};
+
+    res.render("manager/board/custBoardDetail", {Manager, Auth, custBoardVO, cri});
+})
+
+// 여행 후기 관리 게시글 삭제
+router.delete("/removeCustBoard", async (req, res, next) => {
+
+    let cri = {};
+    let custboardVO = await models.custboard.findOne({
+        raw: true,
+        where: {
+            id : req.query.id
+        }
+    });
+    models.custboard.destroy({
+        where: {
+            id : req.query.id,
+        }
+    }).then( (result) => {
+        console.log('----------삭제되었습니다------->', result);
+    }).catch( (err) => {
+        console.log('삭제 실패!!', err);
+        next(err);
+    })
+
+    res.render("manager/board/custBoardList", {cri, custboardVO});
+})
 
 
-
-// 📋 상품 문의사항 관리
+// 📋 상품 문의사항 관리 ---------------------------------------------------------------
+// 상품 문의 사항 게시판 목록 보기
 router.get('/planBoardList', async (req, res, next) => {
 // header 공통 !!!
     let Manager = {};
@@ -523,9 +587,107 @@ router.get('/planBoardList', async (req, res, next) => {
             ["id", "DESC"]
         ],
     })
+    let cri = {};
 
-    res.render("manager/board/planBoardList", {Manager, Auth});
+    res.render("manager/board/planBoardList", {Manager, Auth, list, cri});
 
+})
+
+// 미답변 상품 문의 사항 게시글 읽기
+router.get('/planBoardDetail', async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {name:"홍길동"};
+    let Auth = {};
+
+    let plan =
+        await models.planboard.findOne({
+            raw: true,
+            where: {
+                id : req.query.id
+            }
+        });
+    console.log('---답변전------', plan);
+    let cri = {};
+
+  res.render("manager/board/planBoardDetail", {Manager, Auth, plan, cri});
+})
+
+// 답변 달고 전송하기
+router.post('/planBoardModify', async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {name:"홍길동"};
+    let Auth = {};
+
+    let cri = {};
+
+    const update = await models.planboard.update({
+        raw : true,
+        writer : req.body.respondWriter,
+        answer : 1,
+        respond : req.body.respondcontent
+    }, {
+        where : {
+            id : req.body.id
+        }
+    });
+
+    // 수정하고 수정된 페이지 보여줘야 하니까
+    let plan = await models.planboard.findOne({
+        where: {
+            id : req.body.id
+        }
+    });
+    console.log('---------req.body------', req.body);
+    console.log('---------수정완---------', update);
+
+    // 답변 완료된 화면 띄어주기인데.. planBoardDetail로 가네,,
+    res.render("manager/board/planBoardModify", {Manager, Auth, cri, update, plan});
+})
+
+
+// 답변 완료 상품 문의 사항 게시글 읽기
+router.get("/planBoardModify", async (req, res, next) => {
+// header 공통 !!!
+    let Manager = {name:"홍길동"};
+    let Auth = {};
+
+    let plan =
+        await models.planboard.findOne({
+            raw: true,
+            where: {
+                id : req.query.id
+            }
+        });
+    console.log('---답변완료된 게시물------', plan);
+    let cri = {};
+
+    res.render("manager/board/planBoardModify", {Manager, Auth, plan, cri});
+})
+
+// 답변 완료 상품 문의 사항 게시글의 '답변' 수정하기
+
+// 상품 문의 사항 게시글 삭제
+router.delete('/deletePlanBoard', async (req, res, next) => {
+
+    let cri = {};
+    let plan = await models.custboard.findOne({
+        raw: true,
+        where: {
+            id : req.query.id
+        }
+    });
+    models.planboard.destroy({
+        where: {
+            id : req.query.id,
+        }
+    }).then( (result) => {
+        console.log('----------삭제되었습니다------->', result);
+    }).catch( (err) => {
+        console.log('삭제 실패!!', err);
+        next(err);
+    })
+
+    res.render("manager/board/planBoardList", {cri, plan});
 })
 
 // 📢️️ 공지사항 관리 ------------------------------------------
@@ -676,7 +838,6 @@ router.post('/addNoticeForm', async (req, res, next) => {
     res.render('manager/notice/noticeMngList', {Manager, Auth, totalCnt, noticeRegister, pagingData, noticeNoFixedCountList, noticeNoFixedList, noticeFixedList, cri});
 })
 
-
 // 공지사항 읽기
 router.get('/noticeDetail', async (req, res, next) => {
 
@@ -684,7 +845,7 @@ router.get('/noticeDetail', async (req, res, next) => {
     let Manager = {};
     let Auth = {};
 
-    let cri = {currentPage};
+    let cri = {};
     const notice = await models.notice.findOne({
         raw: true,
         where: {
@@ -694,7 +855,6 @@ router.get('/noticeDetail', async (req, res, next) => {
 
     res.render("manager/notice/noticeDetail", {Manager, Auth, notice, cri});
 })
-
 
 // 공지사항 수정하기
 router.get('/editNotice', async (req, res, next) => {
@@ -744,7 +904,6 @@ router.post('/editNotice', async (req, res, next) => {
 
     res.render("manager/notice/noticeDetail", {Manager, Auth, cri, update, notice});
 });
-
 
 // 공지사항 삭제하기
 router.delete('/removeNotice', async (req, res, next) => {

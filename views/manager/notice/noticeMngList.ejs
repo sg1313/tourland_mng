@@ -63,14 +63,6 @@ $(function(){
 </div>
 
 <script>
-	$("#btnSearch").click(function(){
-		var searchType = $("#searchType").val();
-		var keyword = $("#keywordInput").val();
-		location.href = "noticeMngList?searchType="+searchType+"&keyword="+keyword;
-		//searchBoardController의 listPage GET 으로 받음
-
-	})
-
 	$("#btnRegister").click(function(){
 		location.href = "register";
 	})
