@@ -10,7 +10,9 @@ const querystring = require('querystring');
 const crypto = require('crypto'); //추가됐음
 const {getPagingData, getPagination} = require('../../controller/pagination');
 const {makePassword, comparePassword} = require('../../controller/passwordCheckUtil');
-
+const bodyParser = require('body-parser');
+const parser = bodyParser.urlencoded({extended : false});
+const {upload} = require("../../controller/fileupload");
 
 router.get('/statistics', (req,res,next)=>{
 
@@ -287,19 +289,114 @@ router.get('/flightMngList', async (req,res,next)=>{
 
 // 🎁️ 이벤트 관리----------------------------------------------------------
 // 전체 이벤트 보기
-router.get("/eventMngList", (req, res, next) => {
+router.get("/eventMngList", async (req, res, next) => {
     // header 공통 !!!
     let Manager = {};
     let Auth = {};
 
-    const list = models.event.findAll({
+    const usersecess = req.params.usersecess;
+    let { searchType, keyword } = req.query;
+
+    const contentSize = 5 // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이
+    const { limit, offset } = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+
+    const list = await models.event.findAll({
             raw : true,
             order: [
-                ["no", "DESC"]
+                ["id", "DESC"]
             ],
+        limit, offset
         });
 
-    res.render("manager/event/eventMngList", {Manager, Auth, list})
+    const listCount =
+        await models.custboard.findAndCountAll({
+            raw : true,
+            order : [
+                ["id", "DESC"]
+            ],
+            limit, offset
+        });
+
+    const pagingData = getPagingData(listCount, currentPage, limit);
+
+    res.render("manager/event/eventMngList", {Manager, Auth, list, pagingData})
+})
+
+// 이벤트 상세보기
+router.get('/eventDetailForm', async (req, res, next) => {
+// header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    const eventVO =
+        await models.event.findOne({
+            raw: true,
+            where: {
+                id : req.query.id
+            }
+        });
+    console.log('--------이벤트 상세보기--------', eventVO)
+
+    res.render("manager/event/eventDetailForm", {Manager, Auth, eventVO})
+})
+
+// 이벤트 등록하기 화면 보이기
+router.get("/eventRegister", async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let url2 = {};
+
+    res.render("manager/event/eventRegister", {Manager, Auth, url2});
+})
+
+// 이벤트 등록할 게시글 작성하고 전송하기
+router.post("/eventRegister", upload.single("eventPic"), async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+    console.log("envenv-----",req.file);
+
+    const register = await models.event.create({
+        title : req.body.title,
+        content : req.body.content,
+        startdate : req.body.startdate,
+        enddate : req.body.enddate,
+        pic : req.file.filename
+
+    })
+    console.log('파일파일파일파일파일파일', req.file);
+
+    res.redirect("/manager/eventMngList")
+})
+
+// 이벤트 수정하기
+
+// 이벤트 삭제하기
+router.delete('/deleteEvent', async (req, res, next) => {
+
+    let eventVO = await models.event.findOne({
+        raw: true,
+        where: {
+            id : req.query.id
+        }
+    });
+    models.event.destroy({
+        where: {
+            id : req.query.id,
+        }
+    }).then( (result) => {
+        console.log('----------삭제되었습니다------->', result);
+    }).catch( (err) => {
+        console.log('삭제 실패!!', err);
+        next(err);
+    })
+
+    res.render("manager/board/eventMngList", { eventVO});
 })
 
 // 📋️ 고객센터(게시판) 관리 ------------------------------------------------

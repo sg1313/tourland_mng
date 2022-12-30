@@ -4,22 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="022f6912-a924-4b38-9214-54f3b4c729bd" name="변경" comment="12.28">
-      <change afterPath="$PROJECT_DIR$/orm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/board/custBoardDetail.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/board/planBoardDetail.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/board/planBoardModify.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/event/eventMngList.ejs" afterDir="false" />
+    <list default="true" id="022f6912-a924-4b38-9214-54f3b4c729bd" name="변경" comment="12.30">
+      <change afterPath="$PROJECT_DIR$/controller/fileupload.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/board.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/usertest.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/displayFile/event/val-1672389392396.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/displayFile/event/winter3-1672389474708.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/manager/event/eventDetailForm.ejs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/manager/event/eventRegister.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/custboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/custboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/init-models.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/init-models.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/notice.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/notice.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/planboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/planboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/managerRoutes/managerRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/managerRoutes/managerRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/manager/board/planBoardList.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/board/planBoardList.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/manager/notice/editNotice.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/notice/editNotice.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/manager/notice/noticeMngList.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/notice/noticeMngList.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/manager/event/eventMngList.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/event/eventMngList.ejs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +110,8 @@
       <workItem from="1672112437132" duration="73000" />
       <workItem from="1672112575426" duration="13803000" />
       <workItem from="1672186658389" duration="18949000" />
-      <workItem from="1672273801520" duration="20692000" />
+      <workItem from="1672273801520" duration="20770000" />
+      <workItem from="1672360238743" duration="12107000" />
     </task>
     <task id="LOCAL-00001" summary="변경">
       <created>1670416532650</created>
@@ -225,7 +225,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672217606153</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="12.29">
+      <created>1672303876038</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1672303876038</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,7 +274,9 @@
     <MESSAGE value="직원관" />
     <MESSAGE value="12.27" />
     <MESSAGE value="12.28" />
-    <option name="LAST_COMMIT_MESSAGE" value="12.28" />
+    <MESSAGE value="12.29" />
+    <MESSAGE value="12.30" />
+    <option name="LAST_COMMIT_MESSAGE" value="12.30" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
