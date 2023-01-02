@@ -29,7 +29,7 @@
 			var json = {"respondText":text};
 			var id = $("#dataNo").val();
 			$.ajax({
-				url:"/manager/planBoardModifyApi?id="+id,
+				url:"/manager/planBoardModify?id="+id,
 				type:"get",
 				data:json,
 				dataType:"text",
@@ -41,7 +41,7 @@
 					alert("수정을 완료했습니다.");
 					
 				}
-			})	
+			})
 		})
 		$("#btnDelete").click(function(){
 			if(!confirm("삭제하시겠습니까?")) {
@@ -131,7 +131,7 @@
         </div>
         <div class="modal-body">
            <p>
-             <input type="text" id="text" class="form-control" value="<%=plan.respond%>">
+             <input type="text" id="text" name="modifyrespond" class="form-control" value="<%=plan.respond%>">
            </p>
         </div>
         <div class="modal-footer">

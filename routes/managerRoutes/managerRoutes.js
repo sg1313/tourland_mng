@@ -359,9 +359,9 @@ router.post("/eventRegister", upload.single("eventPic"), async (req, res, next) 
     // header 공통 !!!
     let Manager = {};
     let Auth = {};
-    console.log("envenv-----",req.file);
 
     const register = await models.event.create({
+        raw : true,
         title : req.body.title,
         content : req.body.content,
         startdate : req.body.startdate,
@@ -369,12 +369,53 @@ router.post("/eventRegister", upload.single("eventPic"), async (req, res, next) 
         pic : req.file.filename
 
     })
+    console.log('내용내용내용내용내용내용', register);
     console.log('파일파일파일파일파일파일', req.file);
 
     res.redirect("/manager/eventMngList")
 })
 
-// 이벤트 수정하기
+// 이벤트 수정하기(전송)
+router.post('/eventUpdate', upload.single("eventPic"), async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let body = {};
+    if( req.file !=null) {
+        body = {
+            raw: true,
+            title: req.body.title,
+            content: req.body.content,
+            startdate: req.body.startdate,
+            enddate: req.body.enddate,
+            pic: req.file.filename,
+        }
+    }
+    else{
+        body = {
+            raw: true,
+            title: req.body.title,
+            content: req.body.content,
+            startdate: req.body.startdate,
+            enddate: req.body.enddate,
+        }
+    }
+
+    const update = await models.event.update(body,
+        {
+        where : {
+            id : req.body.id
+        }
+    });
+
+    console.log('---------req.body------', req.body);
+    console.log('-------수정하기----------', update);
+
+    res.redirect("/manager/eventMngList")
+    // res.render("manager/event/eventDetailForm", {Manager, Auth, update, eventVO});
+})
+
 
 // 이벤트 삭제하기
 router.delete('/deleteEvent', async (req, res, next) => {
@@ -583,7 +624,7 @@ router.delete('/removeFAQ', async (req, res, next) => {
     res.render('manager/notice/FAQMngList', {Manager, Auth, cri})
 })
 
-// 📋 여행후기 관리 ------------------------------------------------------------------------
+// 여행후기 관리 ------------------------------------------------------------------------
 // 여행 후기 관리 게시판
 router.get("/custBoardMngList", async (req, res, next) => {
     // header 공통 !!!
@@ -671,7 +712,7 @@ router.delete("/removeCustBoard", async (req, res, next) => {
 })
 
 
-// 📋 상품 문의사항 관리 ---------------------------------------------------------------
+// 상품 문의사항 관리 ---------------------------------------------------------------
 // 상품 문의 사항 게시판 목록 보기
 router.get('/planBoardList', async (req, res, next) => {
 // header 공통 !!!
@@ -762,6 +803,23 @@ router.get("/planBoardModify", async (req, res, next) => {
 })
 
 // 답변 완료 상품 문의 사항 게시글의 '답변' 수정하기
+router.post("/planBoardModify", async ( req, res, next) => {
+
+    const update = await models.planboard.update({
+        raw : true,
+        respond : req.body.modifyrespond
+    });
+    console.log('----수정된 내용---------', update);
+    const plan = await models.planboard.findOne({
+        where: {
+            id : req.query.id
+        }
+    });
+    console.log('---수정완료된 게시물------', plan);
+
+    res.render("manager/board/planBoardModify", {update, plan});
+})
+
 
 // 상품 문의 사항 게시글 삭제
 router.delete('/deletePlanBoard', async (req, res, next) => {

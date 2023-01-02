@@ -5,20 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="022f6912-a924-4b38-9214-54f3b4c729bd" name="변경" comment="12.30">
-      <change afterPath="$PROJECT_DIR$/controller/fileupload.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/board.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/usertest.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/displayFile/event/val-1672389392396.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/displayFile/event/winter3-1672389474708.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/event/eventDetailForm.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/event/eventRegister.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/managerRoutes/managerRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/managerRoutes/managerRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/manager/event/eventMngList.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/event/eventMngList.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/manager/board/planBoardModify.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/board/planBoardModify.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/manager/event/eventDetailForm.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/event/eventDetailForm.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/manager/event/eventRegister.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/event/eventRegister.ejs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +49,7 @@
     "WebServerToolWindowFactoryState": "false",
     "javascript.nodejs.core.library.configured.version": "14.20.0",
     "javascript.nodejs.core.library.typings.version": "14.18.36",
-    "last_opened_file_path": "/home/edu01/IdeaProjects/tourland_manager/views/manager/event",
+    "last_opened_file_path": "/home/edu01/IdeaProjects/tourland_a",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -111,7 +105,8 @@
       <workItem from="1672112575426" duration="13803000" />
       <workItem from="1672186658389" duration="18949000" />
       <workItem from="1672273801520" duration="20770000" />
-      <workItem from="1672360238743" duration="12107000" />
+      <workItem from="1672360238743" duration="12334000" />
+      <workItem from="1672617868529" duration="23069000" />
     </task>
     <task id="LOCAL-00001" summary="변경">
       <created>1670416532650</created>
@@ -232,7 +227,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672303876038</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="12.30">
+      <created>1672390200521</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1672390200521</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
