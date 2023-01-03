@@ -312,7 +312,7 @@ router.get("/eventMngList", async (req, res, next) => {
         });
 
     const listCount =
-        await models.custboard.findAndCountAll({
+        await models.event.findAndCountAll({
             raw : true,
             order : [
                 ["id", "DESC"]
@@ -440,8 +440,8 @@ router.delete('/deleteEvent', async (req, res, next) => {
     res.render("manager/board/eventMngList", { eventVO});
 })
 
-// 📋️ 고객센터(게시판) 관리 ------------------------------------------------
-// 📋️ ️FAQ 게시판 보기
+// ️------------------------------------------------ 고객센터(게시판) 관리 ------------------------------------------------
+// ️ ️FAQ 게시판 보기
 router.get('/FAQMngList', async (req, res, next) => {
     // header 공통 !!!
     let Manager = {};
@@ -712,12 +712,21 @@ router.delete("/removeCustBoard", async (req, res, next) => {
 })
 
 
-// 상품 문의사항 관리 ---------------------------------------------------------------
+// --------------------------------------------------------------- 상품 문의사항 관리 ---------------------------------------------------------------
 // 상품 문의 사항 게시판 목록 보기
 router.get('/planBoardList', async (req, res, next) => {
 // header 공통 !!!
     let Manager = {};
     let Auth = {};
+
+    const usersecess = req.params.usersecess;
+    let { searchType, keyword } = req.query;
+
+    const contentSize = 5 // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이
+    const { limit, offset } = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
 
     const list = await models.planboard.findAll({
         raw : true,
@@ -725,9 +734,19 @@ router.get('/planBoardList', async (req, res, next) => {
             ["id", "DESC"]
         ],
     })
+    const listCount =
+        await models.planboard.findAndCountAll({
+            raw : true,
+            order : [
+                ["id", "DESC"]
+            ],
+            limit, offset
+        });
+
+    const pagingData = getPagingData(listCount, currentPage, limit);
     let cri = {};
 
-    res.render("manager/board/planBoardList", {Manager, Auth, list, cri});
+    res.render("manager/board/planBoardList", {Manager, Auth, list, pagingData, cri});
 
 })
 
@@ -803,21 +822,27 @@ router.get("/planBoardModify", async (req, res, next) => {
 })
 
 // 답변 완료 상품 문의 사항 게시글의 '답변' 수정하기
-router.post("/planBoardModify", async ( req, res, next) => {
+router.post("/planBoardModify/:id", async ( req, res, next) => {
 
-    const update = await models.planboard.update({
+    let {data} = req.body;
+    let {test, kkkk} = req.query;
+    console.log('----수정된 respond---------',req.params, req.body);
+    let update = await models.planboard.update({
         raw : true,
-        respond : req.body.modifyrespond
-    });
-    console.log('----수정된 내용---------', update);
-    const plan = await models.planboard.findOne({
-        where: {
-            id : req.query.id
+        respond : req.body.respondText
+    }, {
+        where : {
+            id : req.params.id
         }
     });
-    console.log('---수정완료된 게시물------', plan);
 
-    res.render("manager/board/planBoardModify", {update, plan});
+    if(update != null){
+        res.status(201).json({"response":"success"});
+    }
+    else{
+        res.status(500).json({"response":"fail"});
+    }
+
 })
 
 
@@ -825,7 +850,7 @@ router.post("/planBoardModify", async ( req, res, next) => {
 router.delete('/deletePlanBoard', async (req, res, next) => {
 
     let cri = {};
-    let plan = await models.custboard.findOne({
+    let plan = await models.planboard.findOne({
         raw: true,
         where: {
             id : req.query.id
@@ -845,7 +870,7 @@ router.delete('/deletePlanBoard', async (req, res, next) => {
     res.render("manager/board/planBoardList", {cri, plan});
 })
 
-// 📢️️ 공지사항 관리 ------------------------------------------
+// --------------------------------------------------------------- 📢️️ 공지사항 관리 ------------------------------------------
 router.get('/noticeMngList', async (req, res, next) => {
     // header 공통 !!!
     let Manager = {};
@@ -1081,7 +1106,7 @@ router.delete('/removeNotice', async (req, res, next) => {
     res.render('manager/notice/noticeMngList', {Manager, Auth, cri})
 })
 
-// 로그인폼------------------------------------------------
+// --------------------------------------------------------------- 로그인폼------------------------------------------------
 router.get('/loginForm', async (req,res,next)=> {
     let { registerSuccess, id} = req.query;
 

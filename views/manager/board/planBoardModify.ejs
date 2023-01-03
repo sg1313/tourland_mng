@@ -26,20 +26,21 @@
 		})
 		$("#btnModSave").click(function(){
 			var text = $(this).parent().prev().find("#text").val();
-			var json = {"respondText":text};
+			var data = {"respondText":text};
 			var id = $("#dataNo").val();
+			alert(data.respondText);
 			$.ajax({
-				url:"/manager/planBoardModify?id="+id,
-				type:"get",
-				data:json,
-				dataType:"text",
+				url:"/manager/planBoardModify/"+id+"?test=11111&kkkk=2222",
+				type:"post",
+				data:data,
+				dataType:"json",
 				success:function(res){
-					console.log(res);
-					$("#respond").val(text);
+					console.log('---------', res);
+					console.log('---------', text);
+					$("#respondcontent").val(text);
 					$("#modifyModal").modal("hide"); 
 					$("#modifyModal .close").click();
 					alert("수정을 완료했습니다.");
-					
 				}
 			})
 		})
