@@ -1396,7 +1396,7 @@ router.get('/couponMngList', async (req, res, next) => {
     const usersecess = req.params.usersecess;
     let { searchType, keyword } = req.query;
 
-    const contentSize = 5 // 한페이지에 나올 개수
+    const contentSize = Number(process.env.CONTENTSIZE) // 한페이지에 나올 개수
     const currentPage = Number(req.query.currentPage) || 1; //현재페이
     const { limit, offset } = getPagination(currentPage, contentSize);
 
@@ -1412,6 +1412,9 @@ router.get('/couponMngList', async (req, res, next) => {
 
     const expired = await models.coupon.findAll({
         raw : true,
+        where : {
+            edate : {[Op.lt] : new Date()}
+        },
         order: [
             ["cno", "DESC"]
         ],

@@ -4,79 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="022f6912-a924-4b38-9214-54f3b4c729bd" name="변경" comment="01.03">
-      <change afterPath="$PROJECT_DIR$/views/include/userMyPageMenu.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/coupon/couponMngList.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/flight/addFlightForm2.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/flight/editFlight.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/flight/flightDetail.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/flight/flightMngList.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/flight/flightMngList2.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/hotel/hotelMngList.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/hotel/hotelModify.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/hotel/hotelRegister.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/payment/paymentList.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/product/addProductForm.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/product/addProductForm_script.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/product/productDetail.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/product/productModify.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/product/productModifyForm_script.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/rentcar/rentcarDetailForm.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/rentcar/rentcarMngList.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/rentcar/rentcarRegister.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/reservation/reservationMngList.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/tour/tourDetail.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/tour/tourMngList.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/tour/tourModify.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/manager/tour/tourRegister.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/mypage/tourlandCartDetail.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/mypage/tourlandMyCoupon.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/mypage/tourlandMyInfoEdit.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/mypage/tourlandMyInfoEditPassword.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/mypage/tourlandMyReserv.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/mypage/tourlandMyReview.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/mypage/tourlandMyWishes.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/mypage/tourlandReadMyReview.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/product/tourlandProductDetail.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/product/tourlandProductJPList.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/product/tourlandProductList_script.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/product/tourlandProductReview.ejs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/user/tourlandLoginManagerForm.ejs" afterDir="false" />
+    <list default="true" id="022f6912-a924-4b38-9214-54f3b4c729bd" name="변경" comment="01.04">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/fileupload.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/fileupload.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/cart.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/cart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/custboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/custboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/hotel.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/hotel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/init-models.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/init-models.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/notice.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/notice.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/pairstatus.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/pairstatus.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/photelstatus.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/photelstatus.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/planboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/planboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/popup.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/popup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/prentstatus.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/prentstatus.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/product.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/product.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/ptourstatus.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/ptourstatus.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/rentcar.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/rentcar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/reservation.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/reservation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/review.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/review.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/tour.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/tour.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/usercoupon.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/usercoupon.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/userpstatus.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/userpstatus.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/usertest.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/usertest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/managerRoutes/managerRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/managerRoutes/managerRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/include/header.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/include/header.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/manager/employee/employeeRegister.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/employee/employeeRegister.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/manager/event/eventDetailForm.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/event/eventDetailForm.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/manager/event/eventMngList.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/event/eventMngList.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/manager/product/productMngList.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/product/productMngList.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/manager/user/userDetailForm.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/user/userDetailForm.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/manager/user/userRegister.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/views/manager/user/userRegister.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/user/tourlandLoginForm.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/user/tourlandLoginForm.ejs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +103,7 @@
       <workItem from="1672360238743" duration="12334000" />
       <workItem from="1672617868529" duration="23665000" />
       <workItem from="1672707894711" duration="17926000" />
-      <workItem from="1672791804154" duration="20508000" />
+      <workItem from="1672791804154" duration="21272000" />
     </task>
     <task id="LOCAL-00001" summary="변경">
       <created>1670416532650</created>
@@ -314,7 +245,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672736962494</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="01.04">
+      <created>1672815426381</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1672815426382</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,7 +298,8 @@
     <MESSAGE value="12.30" />
     <MESSAGE value="01.02" />
     <MESSAGE value="01.03" />
-    <option name="LAST_COMMIT_MESSAGE" value="01.03" />
+    <MESSAGE value="01.04" />
+    <option name="LAST_COMMIT_MESSAGE" value="01.04" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
