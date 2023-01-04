@@ -1,45 +1,43 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('photelstatus', {
-    pno: {
+    hotelId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
-      comment: "상품번호",
-      references: {
-        model: 'product',
-        key: 'pno'
-      }
-    },
-    hno: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      comment: "호텔번호",
       references: {
         model: 'hotel',
-        key: 'no'
+        key: 'id'
+      }
+    },
+    productId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: 'product',
+        key: 'id'
       }
     }
   }, {
     sequelize,
     tableName: 'photelstatus',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "pno" },
-          { name: "hno" },
+          { name: "hotelId" },
+          { name: "productId" },
         ]
       },
       {
-        name: "FK_hotel_TO_photelstatus",
+        name: "productId",
         using: "BTREE",
         fields: [
-          { name: "hno" },
+          { name: "productId" },
         ]
       },
     ]

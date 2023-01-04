@@ -14,6 +14,7 @@ const bodyParser = require('body-parser');
 const parser = bodyParser.urlencoded({extended : false});
 const {upload} = require("../../controller/fileupload");
 
+// ------------------------------------- 관리자 페이지 메인 -------------------------------------
 router.get('/statistics', (req,res,next)=>{
 
     let Manager = {};
@@ -22,123 +23,8 @@ router.get('/statistics', (req,res,next)=>{
     res.render("manager/main/statistics",{Manager, Auth});
 })
 
-router.get('/employeeMngList/:empretired', async (req,res,next)=>{
-        //empretired 정상사원, 퇴사사원 구분
-
-        const empretired = req.params.empretired;
-        let { searchType, keyword } = req.query;
-
-        const contentSize = Number(process.env.CONTENTSIZE); // 한페이지에 나올 개수
-        const currentPage = Number(req.query.currentPage) || 1; //현재페이지
-        const { limit, offset } = getPagination(currentPage, contentSize);
-
-        keyword = keyword ? keyword : "";
-
-        let dataAll = await models.employee.findAll({
-            where: {
-                [Op.and] : [
-                    {
-                        empretired: empretired
-                    }
-                ],
-                [Op.or]: [
-                    {
-                        empid: { [Op.like]: "%" +keyword+ "%" }
-                    },
-                    {
-                        empname: { [Op.like]: "%" + keyword + "%" }
-                    }
-                ]
-
-            },
-            limit, offset
-        })
-
-        let dataCountAll = await models.employee.findAndCountAll({
-            where: {
-                [Op.and] : [
-                    {
-                        empretired: empretired
-                    }
-                ],
-                [Op.or]: [
-                    {
-                        empid: { [Op.like]: "%" +keyword+ "%" }
-                    },
-                    {
-                        empname: { [Op.like]: "%" + keyword + "%" }
-                    }
-                ]
-            },
-            limit, offset
-        })
-
-        const pagingData = getPagingData(dataCountAll, currentPage, limit);
-
-        let cri = {searchType,keyword};
-
-        let btnName = (Boolean(Number(empretired)) ? "직원 리스트" : "퇴사사원 조회");
-
-        console.log("usersecbtt->", btnName)
-        let Manager = {};
-        let Auth ={};
-        let list = dataAll;
-
-    res.render("manager/employee/employeeMngList",{cri, list, btnName, pagingData, Manager, empretired, Auth});
-})
-
-router.get('/employeeDetailForm/:empretired', async (req,res,next)=> {
-    //empretired 일반사원, 퇴사사원 구분
-
-    console.log("33333333333333333333");
-    const empretired = req.params.empretired;
-    let { no, currentPage, searchType, keyword } = req.query;
-
-    let empVO = await models.employee.findOne({
-        raw : true,
-
-        where : {empno : no}
-    })
-    console.log("empid->", empVO);
-
-    let cri = {};
-    let Manager = {};
-    let Auth = {};
-    let success ="";
-
-    res.render("manager/employee/employeeDetailForm", {empVO, cri, Manager, Auth, empretired,success});
-});
-
-router.post('/employeeDetailForm/:empretired', async (req,res,next)=> {
-    //empretired 일반사원, 퇴사사원 구분
-
-    console.log("33333333333333333333");
-    const {empretired, empno, empname, empbirth, emptel, empaddr, empauth, empid} = req.params;
-    let { no, currentPage, searchType, keyword } = req.query;
-
-    let empVO = await models.employee.findOne({
-        raw : true,
-
-        where : {empno : no}
-    })
-    console.log("empid->", empVO);
-
-    let cri = {};
-    let Manager = {};
-    let Auth = {};
-    let success ="";
-
-    res.render("manager/employee/employeeDetailForm", {empVO, cri, Manager, Auth, empretired,success});
-});
-
-router.get('/manager/employeeMngList/:empretired', (req,res,next)=>{
-
-    let Manager = {};
-    let Auth = {};
-
-    res.render("manager/employee/employeeRegister",{Manager, Auth, empretired});
-})
-
+//----------------------------- 고객관리 ---------------------------------------
+// 고객 관리 전체 목록
 router.get('/userMngList/:usersecess', async (req,res,next)=>{
     //usersecess 정상회원, 탈퇴회원 구분
 
@@ -204,8 +90,7 @@ router.get('/userMngList/:usersecess', async (req,res,next)=>{
     res.render("manager/user/userMngList",{cri, list, btnName, pagingData, Manager, usersecess, Auth});
 })
 
-
-
+// 고객 정보 상세 보기
 router.get('/userDetailForm/:usersecess', async (req,res,next)=> {
     //usersecess 정상회원, 탈퇴회원 구분
     const usersecess = req.params.usersecess;
@@ -226,8 +111,152 @@ router.get('/userDetailForm/:usersecess', async (req,res,next)=> {
     res.render("manager/user/userDetailForm", {userVO, cri, Manager, Auth, usersecess,couponLists});
 });
 
-// / ✈️  productfilightMngList----------------------------------------------------
 
+// ------------------------------------------------ 직원관리 --------------------------------------------------------
+// 직원 관리 전체 목록
+router.get('/employeeMngList/:empretired', async (req,res,next)=>{
+        //empretired 정상사원, 퇴사사원 구분
+
+        const empretired = req.params.empretired;
+        let { searchType, keyword } = req.query;
+
+        const contentSize = Number(process.env.CONTENTSIZE); // 한페이지에 나올 개수
+        const currentPage = Number(req.query.currentPage) || 1; //현재페이지
+        const { limit, offset } = getPagination(currentPage, contentSize);
+
+        keyword = keyword ? keyword : "";
+
+        let dataAll = await models.employee.findAll({
+            where: {
+                [Op.and] : [
+                    {
+                        empretired: empretired
+                    }
+                ],
+                [Op.or]: [
+                    {
+                        empid: { [Op.like]: "%" +keyword+ "%" }
+                    },
+                    {
+                        empname: { [Op.like]: "%" + keyword + "%" }
+                    }
+                ]
+
+            },
+            limit, offset
+        })
+
+        let dataCountAll = await models.employee.findAndCountAll({
+            where: {
+                [Op.and] : [
+                    {
+                        empretired: empretired
+                    }
+                ],
+                [Op.or]: [
+                    {
+                        empid: { [Op.like]: "%" +keyword+ "%" }
+                    },
+                    {
+                        empname: { [Op.like]: "%" + keyword + "%" }
+                    }
+                ]
+            },
+            limit, offset
+        })
+
+        const pagingData = getPagingData(dataCountAll, currentPage, limit);
+
+        let cri = {searchType,keyword};
+
+        let btnName = (Boolean(Number(empretired)) ? "직원 리스트" : "퇴사사원 조회");
+
+        console.log("usersecbtt->", btnName)
+        let Manager = {};
+        let Auth ={};
+        let list = dataAll;
+
+    res.render("manager/employee/employeeMngList",{cri, list, btnName, pagingData, Manager, empretired, Auth});
+})
+
+// 직원 정보 상세 보기
+router.get('/employeeDetailForm/:empretired', async (req,res,next)=> {
+    //empretired 일반사원, 퇴사사원 구분
+
+    console.log("33333333333333333333");
+    const empretired = req.params.empretired;
+    let { no, currentPage, searchType, keyword } = req.query;
+
+    let empVO = await models.employee.findOne({
+        raw : true,
+
+        where : {empno : no}
+    })
+    console.log("empid->", empVO);
+
+    let cri = {};
+    let Manager = {};
+    let Auth = {};
+    let success ="";
+
+    res.render("manager/employee/employeeDetailForm", {empVO, cri, Manager, Auth, empretired,success});
+});
+
+// 사원 추가
+router.get('/employeeRegister', (req,res,next)=>{
+
+    let Manager = {};
+    let Auth = {};
+
+    res.render("manager/employee/employeeRegister",{Manager, Auth});
+})
+
+// --------------------------------------------------------------- 예약 관리 ---------------------------------------------------------------
+router.get('/reservationMngList', async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    const usersecess = req.params.usersecess;
+    let { searchType, keyword } = req.query;
+
+    const contentSize = 5 // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이
+    const { limit, offset } = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+
+    let noList = {};
+    let yesList = {};
+
+    const list =
+        await  models.reservation.findAll({
+            raw : true,
+            order: [
+                ["no", "DESC"]
+            ],
+            limit, offset
+        });
+    const listCount =
+        await models.reservation.findAndCountAll({
+            raw : true,
+            order : [
+                ["no", "DESC"]
+            ],
+            limit, offset
+        });
+
+    const pagingData = getPagingData(listCount, currentPage, limit);
+    let cri = {currentPage};
+
+
+    res.render("manager/reservation/reservationMngList", {Manager, Auth, noList, yesList, list , pagingData, cri});
+})
+
+
+// --------------------------------------------------------------- 상품 관리 ---------------------------------------------------------------
+// / ✈️ 항공관리 productfilightMngList----------------------------------------------------
+// 항공 관리 전체 목록
 router.get('/flightMngList', async (req,res,next)=>{
 
 
@@ -239,55 +268,307 @@ router.get('/flightMngList', async (req,res,next)=>{
 
     keyword = keyword ? keyword : "";
 
-    let dataAll = await models.user.findAll({
-        where: {
+    let querystring = null;
+    let flightList = [];
+    let dataCountAll = [];
 
-            // [Op.or]: [
-            //     {
-            //         userid: { [Op.like]: "%" +keyword+ "%" }
-            //     },
-            //     {
-            //         username: { [Op.like]: "%" + keyword + "%" }
-            //     }
-            // ]
+    if (searchType == "id") {
+        flightList = await models.airplane.findAll({
+            where: {[Op.or]: [{id: {[Op.like]: "%" + keyword + "%"}},]}, limit, offset
+        })
 
-        },
+        dataCountAll = await models.airplane.findAndCountAll({
+            where: {[Op.or]: [{id: {[Op.like]: "%" + keyword + "%"}}]}, limit, offset
+        })
+    } else if (searchType == "ano") {
+        flightList = await models.airplane.findAll({
+            where: {[Op.or]: [{ano: {[Op.like]: "%" + keyword + "%"}},]}, limit, offset
+        })
+
+        dataCountAll = await models.airplane.findAndCountAll({
+            where: {[Op.or]: [{ano: {[Op.like]: "%" + keyword + "%"}}]}, limit, offset
+        })
+
+    } else if (searchType == "rloca") {
+        flightList = await models.airplane.findAll({
+            where: {[Op.or]: [{rlocation: {[Op.like]: "%" + keyword + "%"}},]}, limit, offset
+        })
+
+        dataCountAll = await models.airplane.findAndCountAll({
+            where: {[Op.or]: [{rlocation: {[Op.like]: "%" + keyword + "%"}}]}, limit, offset
+        })
+    } else {
+        flightList = await models.airplane.findAll({
+            where: {}, limit, offset
+        })
+        dataCountAll = await models.airplane.findAndCountAll({
+            where: {}, limit, offset
+        })
+    }
+
+    const pagingData = getPagingData(dataCountAll, currentPage, limit);
+
+    let cri = {searchType, keyword};
+
+
+    let Manager = {};
+    let Auth = {};
+
+
+    res.render("manager/flight/flightMngList2", {cri, flightList, pagingData, Manager, Auth});
+})
+
+// 항공 관리 페이지에서 검색 기능
+router.get('/flightDomList/:currentPage', async (req, res, next) => {
+
+
+    let {searchType, keyword} = req.query;
+
+    console.log("6666666666->", req.query);
+    let {currentPage} = req.params;
+
+    const contentSize = Number(process.env.CONTENTSIZE); // 한페이지에 나올 개수
+    currentPage = Number(currentPage) || 1; //현재페이지
+    const {limit, offset} = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+
+    let flightList = await models.airplane.findAll({
+        where: {},
         limit, offset
     })
 
-    let dataCountAll = await models.user.findAndCountAll({
-        where: {
-
-            // [Op.or]: [
-            //     {
-            //         userid: { [Op.like]: "%" +keyword+ "%" }
-            //     },
-            //     {
-            //         username: { [Op.like]: "%" + keyword + "%" }
-            //     }
-            // ]
-        },
+    let dataCountAll = await models.airplane.findAndCountAll({
+        where: {},
         limit, offset
     })
 
     const pagingData = getPagingData(dataCountAll, currentPage, limit);
 
-    let cri = {searchType,keyword};
+    let cri = {searchType, keyword};
+
+
+    let Manager = {};
+    let Auth = {};
+
+    res.render("manager/flight/flightMngList2", {cri, flightList, pagingData, Manager, Auth});
+})
+
+
+// 🏨 호텔 관리 ----------------------------------------------------------
+// 호텔 관리 전체 목록
+router.get('/hotelMngList', async (req, res, next) => {
+
+
+    let {searchType, keyword, keyword2, keyword3} = req.query;
+
+    const contentSize = Number(process.env.CONTENTSIZE); // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이지
+    const {limit, offset} = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+
+    const list = await models.hotel.findAll({
+        // raw : true,
+        nest: true,
+        attributes: ['id', 'hname', 'haddr', 'checkin', 'checkout', 'capacity', 'price', 'roomcapacity', 'roomtype', 'ldiv','bookedup','totalcapacity','pdiv'],
+        where: {
+
+        },
+        limit, offset
+    });
+    let dataCountAll = await models.hotel.findAndCountAll({
+        where: {
+
+        },
+        limit, offset
+    });
+
+
+    const pagingData = getPagingData(dataCountAll, currentPage, limit);
+
+    let cri = {searchType, keyword, keyword2, keyword3};
+
+
+    let Manager = {};
+    let Auth = {};
+
+    res.render("manager/hotel/hotelMngList", {cri, list, pagingData, Manager, Auth});
+})
+
+// 🚩 현지 투어 관리 ----------------------------------------------------------
+// 현지 투어 관리 전체 목록
+router.get('/tourMngList', async (req, res, next) => {
+
+
+    let {searchType, keyword} = req.query;
+
+    const contentSize = Number(process.env.CONTENTSIZE); // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이지
+    const {limit, offset} = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+
+    const list = await models.tour.findAll({
+        // raw : true,
+        nest: true,
+        attributes: ['id', 'tname', 'tlocation', 'startDate', 'endDate', 'taddr', 'etime', 'capacity', 'tprice', 'ldiv'],
+        where: {
+
+
+        },
+        limit, offset
+    });
+    let dataCountAll = await models.tour.findAndCountAll({
+        where: {
+
+        },
+        limit, offset
+    });
+
+
+    const pagingData = getPagingData(dataCountAll, currentPage, limit);
+
+    let cri = {searchType, keyword};
+
+
+    let Manager = {};
+    let Auth = {};
+
+    res.render("manager/tour/tourMngList", {cri, list, pagingData, Manager, Auth});
+})
+
+// 🚗 렌트카 관리 ----------------------------------------------------------
+// 렌트카 관리 전체 목록
+router.get('/rentcarMngList', async (req, res, next) => {
+
+
+    let {searchType, keyword} = req.query;
+
+    const contentSize = Number(process.env.CONTENTSIZE); // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이지
+    const {limit, offset} = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+
+    const list = await models.rentcar.findAll({
+        // raw : true,
+        nest: true,
+        attributes: ['id','cdiv','cno','rentddate','returndate','rentaddr','returnaddr','price','capacity','insurance','ldiv'],
+        where: {
+
+
+        },
+        limit, offset
+    });
+    let dataCountAll = await models.tour.findAndCountAll({
+        where: {
+
+        },
+        limit, offset
+    });
+
+
+    const pagingData = getPagingData(dataCountAll, currentPage, limit);
+
+    let cri = {searchType, keyword};
+
+
+    let Manager = {};
+    let Auth = {};
+
+    res.render("manager/rentcar/rentcarMngList", {cri, list, pagingData, Manager, Auth});
+})
+
+// 상품 목록 ----------------------------------------------------------
+// 상품 전체 목록
+router.get('/productMngList', async (req, res, next) => {
+
+
+    let {searchType, keyword} = req.query;
+
+    const contentSize = Number(process.env.CONTENTSIZE); // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이지
+    const {limit, offset} = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+    console.log('-------------상품목록--------------');
+    const list = await models.product.findAll({
+        // raw : true,
+        nest: true, attributes: ['id', 'pname', 'pcontent', 'pexpire', 'pprice', 'ppic'],
+        include: [
+            {
+                model: models.airplane,
+                attributes: ['price', 'ano'],
+                as: 'airplaneId_airplanes',
+                nest: true,
+                paranoid: true,
+                required: false,
+            },
+            {
+                model: models.hotel,
+                attributes: ['checkin', 'checkout', 'price', 'hname'],
+                as: 'hotelId_hotels',
+                nest: true,
+                paranoid: true,
+                required: false,
+            },
+            {
+                model: models.tour,
+                attributes: ['tprice'],
+                as: 'tourId_tours',
+                nest: true,
+                paranoid: true,
+                required: false,
+            },
+            {
+                model: models.rentcar,
+                as: 'rentcarId_rentcars',
+                nest: true,
+                paranoid: true,
+                required: false,
+            },
+        ],
+        where: {
+            // pname: {
+            //     [Op.like]: "%" + '제주' + "%"
+            // }
+            // id : 13
+
+        },
+        limit, offset
+    });
+    let dataCountAll = await models.product.findAndCountAll({
+        where: {
+
+            // [Op.or]: [
+            //     {
+            //         userid: { [Op.like]: "%" +keyword+ "%" }
+            //     },
+            //     {
+            //         username: { [Op.like]: "%" + keyword + "%" }
+            //     }
+            // ]
+        },
+        limit, offset
+    });
+
+
+    const pagingData = getPagingData(dataCountAll, currentPage, limit);
+
+    let cri = {searchType, keyword};
 
 
     console.log("usersecbtt->")
     let Manager = {};
-    let Auth ={};
-    let list = dataAll;
+    let Auth = {};
+    // res.send("ddddddddddddddd"+list);
 
-    res.render("manager/product/flightMngList",{cri, list,  pagingData, Manager, Auth});
+    res.render("manager/product/productMngList", {cri, list, pagingData, Manager, Auth});
 })
 
-// 🏨 호텔 관리 -------------------
-// 🚩 투어 관리 -------------------
-// 🚗 렌트카 관리-----------------
 
-// 🎁️ 이벤트 관리----------------------------------------------------------
+// 🎁️ 이벤트 관리 ----------------------------------------------------------
 // 전체 이벤트 보기
 router.get("/eventMngList", async (req, res, next) => {
     // header 공통 !!!
@@ -1106,6 +1387,63 @@ router.delete('/removeNotice', async (req, res, next) => {
     res.render('manager/notice/noticeMngList', {Manager, Auth, cri})
 })
 
+// --------------------------------------------------------------- 쿠폰 관리 ---------------------------------------------------------------
+router.get('/couponMngList', async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    const usersecess = req.params.usersecess;
+    let { searchType, keyword } = req.query;
+
+    const contentSize = 5 // 한페이지에 나올 개수
+    const currentPage = Number(req.query.currentPage) || 1; //현재페이
+    const { limit, offset } = getPagination(currentPage, contentSize);
+
+    keyword = keyword ? keyword : "";
+    let cri = {currentPage};
+
+    const available = await models.coupon.findAll({
+        raw : true,
+        order: [
+            ["cno", "DESC"]
+        ],
+    })
+
+    const expired = await models.coupon.findAll({
+        raw : true,
+        order: [
+            ["cno", "DESC"]
+        ],
+    })
+
+    const listCount =
+        await models.coupon.findAndCountAll({
+            raw : true,
+            order : [
+                ["cno", "DESC"]
+            ],
+            limit, offset
+        });
+
+    const pagingData = getPagingData(listCount, currentPage, limit);
+
+    res.render("manager/coupon/couponMngList", {Manager, Auth, cri, available, expired, pagingData});
+})
+
+// --------------------------------------------------------------- 결제 관리 ---------------------------------------------------------------
+router.get('/paymentList', async (req, res, next) => {
+    // header 공통 !!!
+    let Manager = {};
+    let Auth = {};
+
+    let cri = {};
+
+
+    res.render("manager/payment/paymentList", {Manager, Auth, cri});
+})
+
+
 // --------------------------------------------------------------- 로그인폼------------------------------------------------
 router.get('/loginForm', async (req,res,next)=> {
     let { registerSuccess, id} = req.query;
@@ -1122,8 +1460,6 @@ router.get('/loginForm', async (req,res,next)=> {
 
     res.render("user/tourlandLoginForm", {Auth,login, Manager,searchkeyword, registerSuccess, UserStay, EmpStay, error});
 });
-
-
 
 router.post('/loginForm', async (req,res,next)=> {
     let { id, pass} = req.body;
@@ -1174,8 +1510,6 @@ router.post('/loginForm', async (req,res,next)=> {
     res.render("user/tourlandLoginForm", {Auth,login, Manager,searchkeyword, registerSuccess, UserStay, EmpStay, error});
 });
 
-
-
 router.post('/loginForm', async (req,res,next)=> {
     let { registerSuccess, id} = req.query;
     let EmpStay = {};
@@ -1188,7 +1522,6 @@ router.post('/loginForm', async (req,res,next)=> {
 
     res.render("user/tourlandLoginForm", {Auth,login, Manager,searchkeyword, registerSuccess, UserStay, EmpStay, error});
 });
-
 
 router.get('/employee/idCheck/:userid', async (req,res,next)=> {
 
@@ -1220,7 +1553,6 @@ router.get('/employee/idCheck/:userid', async (req,res,next)=> {
     }
 
 });
-
 
 router.get('/tourlandRegister', async (req,res,next)=> {
     let autoNo = "";

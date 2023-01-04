@@ -53,17 +53,17 @@ router.get('/displayFile/:whichOne', async  (req, res, next) => {
     fs.createReadStream(path).pipe(res);
 });
 
-router.get('/displayEventFile/:whichOne', async  (req, res, next) => {
-    const choice = req.params.whichOne;
-    const query = req.query.filename;
-    const base_dir = "public/displayFile";
-
-    let path;
-    if ( choice === "event"){
-        path = base_dir + "/event/" + query;
-    }
-    fs.createReadStream(path).pipe(res);
-});
+// router.get('/displayEventFile/:whichOne', async  (req, res, next) => {
+//     const choice = req.params.whichOne;
+//     const query = req.query.filename;
+//     const base_dir = "public/displayFile";
+//
+//     let path;
+//     if ( choice === "event"){
+//         path = base_dir + "/event/" + query;
+//     }
+//     fs.createReadStream(path).pipe(res);
+// });
 
 
 router.get("/logout", (req, res, next)=>{

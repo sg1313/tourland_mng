@@ -1,0 +1,350 @@
+<%- include (../../include/header.ejs) %>
+
+<style>
+    h2 {
+        font-weight: bold;
+        padding-bottom: 10px;
+        border-bottom: 1px solid gray;
+    }
+
+    .form-group {
+        width: 200px;
+        margin: 20px;
+        float: left;
+    }
+
+    .group {
+        width: 100%;
+        height: 100px;
+    }
+
+    #guide {
+        text-indent: 10px;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .flightList:hover {
+        background-color: lightgrey;
+    }
+
+    .hotelList:hover {
+        background-color: lightgrey;
+    }
+
+    .tourList:hover {
+        background-color: lightgrey;
+    }
+
+    .rentcarList:hover {
+        background-color: lightgrey;
+    }
+
+    #airTable th, #airTable td {
+        text-align: center;
+    }
+
+    #hotelTable th, #hotelTable td {
+        text-align: center;
+    }
+
+    #tourTable th, #tourTable td {
+        text-align: center;
+    }
+
+    #rentTable th, #rentTable td {
+        text-align: center;
+    }
+
+    #preview img {
+        height: 100px;
+    }
+
+    #first {
+        color: maroon;
+        font-weight: bold;
+    }
+
+    #bus {
+        color: steelblue;
+        font-weight: bold;
+    }
+
+    #eco {
+        color: goldenrod;
+        font-weight: bold;
+    }
+</style>
+<script>
+    $(function () {
+        $("#mod").click(function () {
+            var no = "<%= vo.pno %>";
+            var page = "<%= cri.page %>";
+            var searchType = "<%= cri.searchType %>";
+            var searchType2 = "<%= cri.searchType2 %>";
+            var keyword = "<%= cri.keyword %>";
+            location.href = "productModify?no=" + no + "&page=" + page + "&searchType=" + searchType + "&keyword=" + keyword;
+        })
+        $("#del").click(function () {
+            if (!confirm("정말 삭제하시겠습니까?")) {
+                alert("삭제가 취소되었습니다");
+                return false;
+            }
+            var no = "<%= vo.pno %>";
+            var page = "<%= cri.page %>";
+            var searchType = "<%= cri.searchType %>";
+            var searchType2 = "<%= cri.searchType2 %>";
+            var keyword = "<%= cri.keyword %>";
+            location.href = "productDelete?no=" + no + "&page=" + page + "&searchType=" + searchType + "&keyword=" + keyword;
+        })
+        $("#return").click(function () {
+            var page = "<%= cri.page %>";
+            var searchType = "<%= cri.searchType %>";
+            var searchType2 = "<%= cri.searchType2 %>";
+            var keyword = "<%= cri.keyword %>";
+            location.href = "productMngList?page=" + page + "&searchType=" + searchType + "&keyword=" + keyword;
+        })
+        $("#detail").css("border", "1px solid black").css("padding", "20px").css("width", "95%");
+        $("#detail").find("img").css("width", "1000px").css("display", "block");
+        $("#detail").find("h2").css("border-bottom", "none").css("overflow", "hidden");
+        $("#detail").find("table").css("width", "100%");
+    })
+</script>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h2>상품 보기</h2>
+                </div>
+                <div class="group">
+                    <div class="form-group">
+                        <label><span class="red">*</span>항공</label>
+                    </div>
+                </div>
+                <div style="padding:20px;">
+                    <table class="table table-bordered" style="width : 100%;">
+                        <tr>
+                            <th>번호</th>
+                            <th>항공기 번호</th>
+                            <th>출발 지역</th>
+                            <th>도착 지역</th>
+                            <th>출발 일시</th>
+                            <th>도착 일시</th>
+                            <th>장소 구분</th>
+                            <th>허용 인원</th>
+                            <th>좌석</th>
+                            <th>가격</th>
+                        </tr>
+                        <% vo.air.forEach( f => { %>
+                        <tr>
+                            <td><%= f.no %></td>
+                            <td><%= f.ano %></td>
+                            <td><%= f.dlocation %></td>
+                            <td><%= f.rlocation %></td>
+                            <td><%= f.ddate %> pattern ="yyyy-MM-dd"</td>
+                            <td><%= f.rdate %> pattern ="yyyy-MM-dd"</td>
+                            <% if (f.ldiv == 0) { %>
+                                <td>해외</td>
+                            <% } %>
+                            <% if (f.ldiv == 1) { %>
+                                <td>국내</td>
+                            <% } %>
+                            <td><%= f.capacity %></td>
+                            <% if (f.seat == 'F') { %>
+                                <td class="first">First-Class</td>
+                            <% } %>
+                            <% if (f.seat == 'B') { %>
+                                <td class="bus">Business-Class</td>
+                            <% } %>
+                            <% if (f.seat == 'E') { %>
+                                <td class="eco">Economy-Class</td>
+                            <% } %>
+                            <td><%= f.price %></td>
+                        </tr>
+                        <% }) %>
+                    </table>
+                </div>
+                <div class="group">
+                    <div class="form-group">
+                        <label><span class="red">*</span>호텔</label>
+                    </div>
+                </div>
+                <div style="padding:20px;">
+                    <table class="table table-bordered" style="width : 100%;">
+                        <tr>
+                            <th>번호</th>
+                            <th>호텔이름</th>
+                            <th>호텔주소</th>
+                            <th>체크인날짜</th>
+                            <th>체크아웃날짜</th>
+                            <th>허용인원수</th>
+                            <th>가격(1박)</th>
+                            <th>객실 수</th>
+                            <th>객실타입</th>
+                            <th>장소구분</th>
+                            <th>예약 가능 여부</th>
+                        </tr>
+                        <% vo.hotel.forEach( hotel => { %>
+                        <tr>
+                            <td><%= hotel.no %></td>
+                            <td><%= hotel.hname %></td>
+                            <td><%= hotel.haddr %></td>
+                            <td><%= hotel.checkin %> pattern="yyyy-MM-dd"</td>
+                            <td><%= hotel.checkout %> pattern="yyyy-MM-dd"</td>
+                            <td><%= hotel.capacity %><span>인</span></td>
+                            <td><%= hotel.price %></td>
+                            <td><%= hotel.roomcapacity %><span>실</span></td>
+
+                            <% if(hotel.roomtype == 'N') { %>
+                                <td style="color:#5D5D5D;" id="n">노말</td>
+                            <% } else if (hotel.roomtype == 'D') { %>
+                                <td style="color:#F29661;" id="d">디럭스</td>
+                            <% } else { %>
+                                <td style="color:#D941C5;" id="s">스위트</td>
+                            <% } %>
+
+                            <% if (hotel.ldiv == 0) { %>
+                                <td>해외</td>
+                            <% } %>
+                            <% if (hotel.ldiv == 1) { %>
+                                <td>국내</td>
+                            <% } %>
+
+                            <% if(hotel.bookedup == 0) { %>
+                                <td><span class="badge bg-orange">예약가능</span></td>
+                            <% } else if(hotel.bookedup == 1) { %>
+                                <td><span class="badge bg-blue">예약불가능</span></td>
+                            <% } %>
+                        </tr>
+                        <% }) %>
+                    </table>
+                </div>
+                <div class="group">
+                    <div class="form-group">
+                        <label><span class="red">*</span>현지 투어</label>
+                    </div>
+                </div>
+                <div style="padding:20px;">
+                    <table class="table table-bordered" style="width : 100%;">
+                        <tr>
+                            <th>번호</th>
+                            <th>투어제목</th>
+                            <th>투어장소</th>
+                            <th>시작일자</th>
+                            <th>종료일자</th>
+                            <th>주소</th>
+                            <th>소요시간</th>
+                            <th>허용인원</th>
+                            <th>가격</th>
+                            <th>장소구분</th>
+                        </tr>
+                        <% vo.tour.forEach( tour => { %>
+                        <tr>
+                            <td><%= tour.no %></td>
+                            <td><%= tour.tname %></td>
+                            <td><%= tour.tlocation %></td>
+                            <td><%= tour.startDate %> pattern="yyyy-MM-dd"</td>
+                            <td><%= tour.endDate %> pattern="yyyy-MM-dd"</td>
+                            <td><%= tour.taddr %></td>
+                            <td><%= tour.etime %> pattern="HH:mm:ss"</td>
+                            <td><%= tour.capacity %></td>
+                            <td><%= tour.tprice %> pattern="###,###"</td>
+                            <td><%= tour.ldiv?'해외':'국내' %></td>
+                        </tr>
+                        <% }) %>
+                    </table>
+                </div>
+                <div class="group">
+                    <div class="form-group">
+                        <label><span class="red">*</span>렌트카</label>
+                    </div>
+                </div>
+                <div style="padding:20px;">
+                    <table class="table table-bordered" style="width : 100%;">
+                        <tr>
+                            <th>번호</th>
+                            <th>차 종류</th>
+                            <th>차 번호</th>
+                            <th>대여 일자</th>
+                            <th>반납 일자</th>
+                            <th>대여 장소</th>
+                            <th>반납 장소</th>
+                            <th>가격</th>
+                            <th>허용인원</th>
+                            <th>보험여부</th>
+                            <th>국내/해외</th>
+                        </tr>
+                        <% vo.rentcar.forEach( rentcarList => { %>
+                        <tr>
+                            <td><%= rentcarList.no %></td>
+                            <td><%= rentcarList.cdiv %></td>
+                            <td><%= rentcarList.cno %></td>
+                            <td><%= rentcarList.rentddate %> pattern="yyyy-MM-dd "</td>
+                            <td><%= rentcarList.returndate %> pattern="yyyy-MM-dd "</td>
+                            <td><%= rentcarList.rentaddr %></td>
+                            <td><%= rentcarList.returnaddr %></td>
+                            <td><%= rentcarList.price %></td>
+                            <td><%= rentcarList.capacity %></td>
+                            <td><%= rentcarList.insurance %></td>
+                            <td><%= rentcarList.ldiv == 0?'해외':'국내' %></td>
+                        </tr>
+                        <% }) %>
+                    </table>
+                </div>
+                <div class="group">
+                    <div class="form-group">
+                        <label>상품 번호</label> <input type="text" class="form-control" readonly="readonly"
+                                                    value="<%= vo.pno %>">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="red">*</span>상품 이름</label> <input
+                                type="text" class="form-control" required="required" value="<%= vo.pname %>"
+                                readonly="readonly">
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="form-group">
+                        <label><span class="red">*</span>상품 설명</label>
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="form-group" style="width : 100%;" id="detail">
+                        <%= vo.pcontent %>
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="form-group">
+                        <label><span class="red">*</span>상품 가격</label> <input
+                                type="text" class="form-control" value="<%=vo.pprice%>" readonly="readonly">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="red">*</span>상품 유효기간</label> <input
+                                type="text" class="form-control"
+                                value='<%=vo.pexpire%> pattern="yyyy-MM-dd"'
+                                readonly="readonly">
+                    </div>
+                </div>
+                <div class="group">
+                    <div class="form-group" style="width : 100%">
+                        <label><span class="red">*</span>상품 사진</label>
+                    </div>
+                </div>
+                <div style="width : 100%;">
+                    <img src="displayFile/product?filename=<%=vo.pic%>" style="width : 90%; margin : 10px;">
+                </div>
+                <div class="box-footer" style="text-align : center;">
+                    <button class="btn btn-warning" id="mod">수정</button>
+                    <button class="btn btn-danger" id="del">삭제</button>
+                    <button class="btn btn-primary" id="return">돌아가기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<%- include (../../include/footer.ejs) %>

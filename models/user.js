@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('user', {
-    userno: {
+    id: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
@@ -38,19 +39,23 @@ module.exports = function(sequelize, DataTypes) {
       comment: "유저아이디"
     },
     userpass: {
-      type: DataTypes.STRING(41),
+      type: DataTypes.STRING(512),
       allowNull: true,
       comment: "유저비밀번호"
     },
     usersecess: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
+      defaultValue: 1,
       comment: "탈퇴여부"
+    },
+    useremail: {
+      type: DataTypes.STRING(100),
+      allowNull: true
     }
   }, {
     sequelize,
     tableName: 'user',
-    hasTrigger: true,
     timestamps: false,
     indexes: [
       {
@@ -58,7 +63,7 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "userno" },
+          { name: "id" },
         ]
       },
     ]

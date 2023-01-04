@@ -115,7 +115,7 @@
         })
         //리스트로 버튼 눌렀을 때 리스트로 돌아가기
         $("#btnReturnToList").click(function(){
-            location.href="${pageContext.request.contextPath}/manager/empMngList/0";
+            location.href="employeeMngList/0";
         })
 
         //아이디 입력값이 달라질 때 마다 아이디 체크 여부를 초기화
@@ -137,10 +137,6 @@
                 <form role="form" action="employeeRegister" method="post">
                     <div class="box-body">
                         <input type="hidden" value="" id="forSubmit">
-                        <div class="form-group">
-                            <label>사원 번호</label>
-                            <input type="text" name="empno" value="${autoNo }" readonly="readonly" style="background:lavender;" >
-                        </div>
                         <div class="form-group">
                             <label>사원 이름</label>
                             <input type="text" name="empname" required="required" placeholder=" 한글 2-5자리">
